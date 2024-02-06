@@ -10,7 +10,7 @@
 
         public string ClientId { get; set; }
 
-        //public ChushkaUser Client { get; set; }
+        public AppUser Client { get; set; }
 
         public DateTime OrderedOn { get; set; }
     }

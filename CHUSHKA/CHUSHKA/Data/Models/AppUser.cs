@@ -2,14 +2,10 @@
 
 namespace CHUSHKA.Data.Models
 {
-    public class AppUser:IdentityUser   
+    public class AppUser : IdentityUser
     {
-        public string Username { get; set; } 
-        public string Password { get; set; }
         public string FullName { get; set; }
-        public string Email { get; set; }
-        public string Role { get; set; }    
-        
 
+        public ICollection<Order> Orders { get; set; }
     }
 }

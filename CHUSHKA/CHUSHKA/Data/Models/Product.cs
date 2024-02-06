@@ -10,9 +10,11 @@
 
         public string Description { get; set; }
 
-        public ProductType Type { get; set; } 
-        
-        public virtual ICollection<Order> Orders { get; set; }
+        public ProductType Type { get; set; }
+
+        public ICollection<Order> Orders { get; set; }
+
+        public bool IsDeleted { get; set; }
 
     }
 }

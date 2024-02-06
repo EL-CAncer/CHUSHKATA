@@ -1,32 +1,41 @@
-﻿using CHUSHKA.Models;
-using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-
-namespace CHUSHKA.Controllers
+﻿namespace Chushka.Web.Controllers
 {
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using AutoMapper;
+    using Microsoft.AspNetCore.Mvc;
+    using Models;
+    using Services.Contracts;
+
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IProductsService productsService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IProductsService productsService)
         {
-            _logger = logger;
+            this.productsService = productsService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
-        }
+            if (!this.User.Identity.IsAuthenticated)
+            {
+                return this.View();
+            }
 
-        public IActionResult Privacy()
-        {
-            return View();
+            var products = (await this.productsService.GetAll())
+                .Select(Mapper.Map<ProductListViewModel>)
+                .ToArray();
+            
+            return this.View(products);
+
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return this.View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? this.HttpContext.TraceIdentifier});
         }
     }
 }
